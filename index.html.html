@@ -6,6 +6,195 @@
 <title>Kanthija — Digital Garden</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+    ═══════════════════════════════════════════
+   PRELOADER
+═══════════════════════════════════════════ */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #060d07;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  transition: opacity .7s ease, visibility .7s ease;
+}
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Stem grow animation */
+.pl-stem-wrap {
+  position: relative;
+  width: 150px;
+  height: 220px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pl-stem {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  background: linear-gradient(to top, rgba(45,106,79,.4), rgba(82,183,136,.9));
+  border-radius: 2px;
+  height: 0;
+  animation: stemGrow 1.8s cubic-bezier(.22,1,.36,1) .2s forwards;
+  transform-origin: bottom center;
+  box-shadow: 0 0 6px rgba(82,183,136,.3);
+}
+@keyframes stemGrow {
+  to { height: 180px; }
+}
+
+/* Leaves sprouting */
+.pl-leaf {
+  position: absolute;
+  opacity: 0;
+  transform-origin: bottom center;
+}
+.pl-leaf-l {
+  bottom: 55px;
+  left: 8px;
+  animation: leafL .8s cubic-bezier(.34,1.56,.64,1) 1.2s forwards;
+}
+.pl-leaf-r {
+  bottom: 90px;
+  right: 8px;
+  animation: leafR .8s cubic-bezier(.34,1.56,.64,1) 1.5s forwards;
+}
+.pl-leaf-l2 {
+  bottom: 125px;
+  left: 6px;
+  animation: leafL .8s cubic-bezier(.34,1.56,.64,1) 1.7s forwards;
+}
+@keyframes leafL {
+  to { opacity: 1; transform: rotate(-15deg); }
+}
+@keyframes leafR {
+  to { opacity: 1; transform: scaleX(-1) rotate(-15deg); }
+}
+
+/* Bloom petals */
+.pl-bloom {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: bloomPop 1.1s cubic-bezier(.34,1.56,.64,1) 1.8s forwards;
+  filter: drop-shadow(0 0 14px rgba(255,143,171,.7)) drop-shadow(0 0 30px rgba(255,209,102,.45));
+}
+@keyframes bloomPop {
+  0%   { opacity:0; transform: translateX(-50%) scale(0) rotate(-45deg); }
+  60%  { opacity:1; transform: translateX(-50%) scale(1.15) rotate(8deg); }
+  100% { opacity:1; transform: translateX(-50%) scale(1) rotate(0deg); }
+}
+.pl-bloom-spin {
+  animation: bloomSpin 18s linear infinite;
+  animation-delay: 2.9s;
+}
+@keyframes bloomSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Pollen particles around bloom */
+.pl-pollen {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+}
+.pl-dot {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+}
+.pl-dot:nth-child(1) { width:6px;height:6px;background:#ffd166;box-shadow:0 0 8px #ffd166;top:0;left:50%;animation:dotFloat 2.5s ease-out 2.9s infinite; --dx:-28px;--dy:-26px; }
+.pl-dot:nth-child(2) { width:5px;height:5px;background:#52b788;box-shadow:0 0 7px #52b788;top:50%;right:0;animation:dotFloat 2.5s ease-out 3.1s infinite; --dx:28px;--dy:-14px; }
+.pl-dot:nth-child(3) { width:5px;height:5px;background:#ff8fab;box-shadow:0 0 7px #ff8fab;bottom:0;left:50%;animation:dotFloat 2.5s ease-out 3.3s infinite; --dx:18px;--dy:26px; }
+.pl-dot:nth-child(4) { width:6px;height:6px;background:#ffd166;box-shadow:0 0 8px #ffd166;top:50%;left:0;animation:dotFloat 2.5s ease-out 3.45s infinite; --dx:-24px;--dy:16px; }
+.pl-dot:nth-child(5) { width:4px;height:4px;background:#52b788;box-shadow:0 0 6px #52b788;top:15%;left:15%;animation:dotFloat 2.5s ease-out 3.6s infinite; --dx:-32px;--dy:-30px; }
+.pl-dot:nth-child(6) { width:4px;height:4px;background:#ff8fab;box-shadow:0 0 6px #ff8fab;top:15%;right:15%;animation:dotFloat 2.5s ease-out 3.75s infinite; --dx:30px;--dy:-28px; }
+@keyframes dotFloat {
+  0%   { opacity:0; transform: translate(0,0) scale(0); }
+  25%  { opacity:1; }
+  100% { opacity:0; transform: translate(var(--dx), var(--dy)) scale(1.6); }
+}
+
+/* Loading text */
+.pl-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(82,183,136,.7);
+  opacity: 0;
+  animation: fadeInText .8s ease 2.0s forwards;
+  text-shadow: 0 0 12px rgba(82,183,136,.4);
+}
+@keyframes fadeInText {
+  to { opacity: 1; }
+}
+
+/* Progress bar */
+.pl-bar-wrap {
+  width: 200px;
+  height: 2px;
+  background: rgba(82,183,136,.12);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeInText .6s ease 2.1s forwards;
+}
+.pl-bar {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(45,106,79,.6), rgba(82,183,136,1), rgba(255,143,171,.85), rgba(255,209,102,.9));
+  border-radius: 2px;
+  width: 0%;
+  animation: barFill 3s cubic-bezier(.4,0,.2,1) 2.1s forwards;
+  box-shadow: 0 0 10px rgba(82,183,136,.7), 0 0 20px rgba(82,183,136,.3);
+}
+@keyframes barFill {
+  to { width: 100%; }
+}
+
+/* Ground glow */
+.pl-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 60px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(45,106,79,.25) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: glowPulse 2s ease-in-out 1s infinite;
+}
+@keyframes glowPulse {
+  0%,100% { opacity:.6; transform: translateX(-50%) scaleX(1); }
+  50%      { opacity:1; transform: translateX(-50%) scaleX(1.1); }
+}
+
+/* Ambient bg orbs in preloader */
+.pl-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+.pl-orb1 { width:320px;height:320px;background:radial-gradient(circle,rgba(82,183,136,.05),transparent 70%);top:-80px;right:-80px; }
+.pl-orb2 { width:240px;height:240px;background:radial-gradient(circle,rgba(255,143,171,.04),transparent 70%);bottom:-60px;left:-60px; }
+
 /* ═══════════════════════════════════════════
    RESET & BASE
 ═══════════════════════════════════════════ */
@@ -337,6 +526,80 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
 </style>
 </head>
 <body>
+<!-- ════ PRELOADER ════ -->
+<div id="preloader">
+  <div class="pl-orb pl-orb1"></div>
+  <div class="pl-orb pl-orb2"></div>
+
+  <div class="pl-stem-wrap">
+    <div class="pl-glow"></div>
+    <div class="pl-stem"></div>
+
+    <!-- Leaves -->
+    <svg class="pl-leaf pl-leaf-l" width="36" height="28" viewBox="0 0 36 28" fill="none">
+      <path d="M2 26C2 26 0 14 8 6C16 -2 32 2 34 2C34 2 28 10 20 16C12 22 2 26 2 26Z" fill="rgba(45,106,79,.55)" stroke="rgba(82,183,136,.6)" stroke-width="1"/>
+    </svg>
+    <svg class="pl-leaf pl-leaf-r" width="30" height="24" viewBox="0 0 30 24" fill="none">
+      <path d="M2 22C2 22 0 12 6 5C12 -2 26 2 28 2C28 2 23 9 16 14C9 19 2 22 2 22Z" fill="rgba(45,106,79,.48)" stroke="rgba(82,183,136,.5)" stroke-width="1"/>
+    </svg>
+    <svg class="pl-leaf pl-leaf-l2" width="26" height="20" viewBox="0 0 26 20" fill="none">
+      <path d="M2 18C2 18 0 10 5 4C10 -2 22 2 24 2C24 2 20 8 14 12C8 16 2 18 2 18Z" fill="rgba(82,183,136,.35)" stroke="rgba(82,183,136,.45)" stroke-width=".8"/>
+    </svg>
+
+    <!-- Bloom at top -->
+    <div class="pl-bloom">
+      <div class="pl-bloom-spin">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 6 evenly-spaced upright petals, all same size, perfectly symmetrical -->
+          <!-- Petal 1 – top (12 o'clock) -->
+          <ellipse cx="50" cy="20" rx="10" ry="22" fill="#ff8fab"/>
+          <!-- Petal 2 – top-right (2 o'clock) -->
+          <ellipse cx="50" cy="20" rx="10" ry="22" fill="#ff8fab" transform="rotate(60 50 50)"/>
+          <!-- Petal 3 – bottom-right (4 o'clock) -->
+          <ellipse cx="50" cy="20" rx="10" ry="22" fill="#ff8fab" transform="rotate(120 50 50)"/>
+          <!-- Petal 4 – bottom (6 o'clock) -->
+          <ellipse cx="50" cy="20" rx="10" ry="22" fill="#ff8fab" transform="rotate(180 50 50)"/>
+          <!-- Petal 5 – bottom-left (8 o'clock) -->
+          <ellipse cx="50" cy="20" rx="10" ry="22" fill="#ff8fab" transform="rotate(240 50 50)"/>
+          <!-- Petal 6 – top-left (10 o'clock) -->
+          <ellipse cx="50" cy="20" rx="10" ry="22" fill="#ff8fab" transform="rotate(300 50 50)"/>
+          <!-- Petal highlight layer (lighter inner glow on each petal) -->
+          <ellipse cx="50" cy="22" rx="5" ry="14" fill="#ffb3c6" opacity=".7"/>
+          <ellipse cx="50" cy="22" rx="5" ry="14" fill="#ffb3c6" opacity=".7" transform="rotate(60 50 50)"/>
+          <ellipse cx="50" cy="22" rx="5" ry="14" fill="#ffb3c6" opacity=".7" transform="rotate(120 50 50)"/>
+          <ellipse cx="50" cy="22" rx="5" ry="14" fill="#ffb3c6" opacity=".7" transform="rotate(180 50 50)"/>
+          <ellipse cx="50" cy="22" rx="5" ry="14" fill="#ffb3c6" opacity=".7" transform="rotate(240 50 50)"/>
+          <ellipse cx="50" cy="22" rx="5" ry="14" fill="#ffb3c6" opacity=".7" transform="rotate(300 50 50)"/>
+          <!-- Centre disc -->
+          <circle cx="50" cy="50" r="16" fill="#ffd166"/>
+          <circle cx="50" cy="50" r="11" fill="#ffe999"/>
+          <circle cx="50" cy="50" r="6"  fill="#ffb300"/>
+          <!-- 6 stamens around centre -->
+          <circle cx="50" cy="36" r="2.2" fill="#52b788"/>
+          <circle cx="62" cy="43" r="2.2" fill="#52b788"/>
+          <circle cx="62" cy="57" r="2.2" fill="#52b788"/>
+          <circle cx="50" cy="64" r="2.2" fill="#52b788"/>
+          <circle cx="38" cy="57" r="2.2" fill="#52b788"/>
+          <circle cx="38" cy="43" r="2.2" fill="#52b788"/>
+        </svg>
+      </div>
+      <!-- Pollen -->
+      <div class="pl-pollen">
+        <div class="pl-dot"></div>
+        <div class="pl-dot"></div>
+        <div class="pl-dot"></div>
+        <div class="pl-dot"></div>
+        <div class="pl-dot"></div>
+        <div class="pl-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="pl-text">Welcome to my digital garden…</p>
+  <div class="pl-bar-wrap">
+    <div class="pl-bar"></div>
+  </div>
+</div>
 
 <div class="bg-glow bg-g1"></div>
 <div class="bg-glow bg-g2"></div>
@@ -367,7 +630,6 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
 </div>
 
 <main>
-
 <!-- ════ HERO ════ -->
 <section id="home">
   <div class="h-orb orb1"></div>
@@ -711,7 +973,7 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
     <div class="foot-icons">
       <a href="mailto:kanthijaannamreddi@gmail.com" class="foot-icon" title="Email"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></a>
       <a href="https://www.linkedin.com/in/kanthija" target="_blank" rel="noopener" class="foot-icon" title="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-      <a href="https://github.com" target="_blank" rel="noopener" class="foot-icon" title="GitHub"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+      <a href="https://github.com/kanthija" target="_blank" rel="noopener" class="foot-icon" title="GitHub"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
     </div>
   </div>
 </footer>
@@ -719,6 +981,16 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
+   /* ── Preloader dismiss ── */
+window.addEventListener('load', function() {
+  // Give all animations time to fully play (bar fills at 2.1s + 3s = 5.1s total), then dismiss
+  setTimeout(function() {
+    var preloader = document.getElementById('preloader');
+    preloader.classList.add('hidden');
+    // Remove from DOM after fade
+    setTimeout(function() { preloader.remove(); }, 900);
+  }, 5500);
+});
 /* ── Utility ── */
 function closeMenu(){ document.getElementById('mnav').classList.remove('open'); }
 document.getElementById('ham').addEventListener('click', function(){
