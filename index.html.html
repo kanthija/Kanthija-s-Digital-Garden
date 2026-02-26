@@ -997,10 +997,24 @@ function closeMenu(){ document.getElementById('mnav').classList.remove('open'); 
 document.getElementById('ham').addEventListener('click', function(){
   document.getElementById('mnav').classList.toggle('open');
 });
-function handleSubmit(e){
+ 
+async function handleSubmit(e){
   e.preventDefault();
-  var b = document.querySelector('.c-btn');
-  b.textContent = 'Sent! 🌸'; b.style.background = '#ff8fab';
+  var form=e.target;
+  var btn=form.querySelector('.c-btn');
+  var data={name:form.querySelector('input[type=text]').value,email:form.querySelector('input[type=email]').value,message:form.querySelector('textarea').value};
+  btn.textContent='Sending… 🌿';btn.disabled=true;btn.style.opacity='.7';
+  try{
+    var res=await fetch('https://formspree.io/f/xaqdvjqv',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+    if(res.ok){
+      btn.textContent='Sent! 🌸';btn.style.background='#ff8fab';btn.style.opacity='1';
+      form.reset();
+    } else {
+      btn.textContent='Try again ✦';btn.disabled=false;btn.style.opacity='1';
+    }
+  } catch(err){
+    btn.textContent='Try again ✦';btn.disabled=false;btn.style.opacity='1';
+  }
 }
 
 window.addEventListener('load', function() {
