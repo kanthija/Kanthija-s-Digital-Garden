@@ -406,6 +406,13 @@ section{position:relative;overflow:hidden}
 /* ═══════════════════════════════════════════
    EXPERIENCE
 ═══════════════════════════════════════════ */
+.terra-card{border-color:rgba(82,183,136,.24)}
+.terra-card:hover{border-color:rgba(0,213,255,.38);box-shadow:0 24px 62px rgba(45,118,95,.16),0 4px 20px rgba(0,0,0,.28)}
+.terra-card .proj-head{background:linear-gradient(145deg,rgba(36,107,88,.24)0%,rgba(18,71,60,.16)45%,rgba(43,180,186,.16)100%);box-shadow:inset 0 0 24px rgba(0,213,255,.14)}
+.terra-card:hover .proj-head{box-shadow:inset 0 0 30px rgba(0,213,255,.2),0 0 18px rgba(0,213,255,.16)}
+.terra-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.terra-link{padding:7px 11px;border-radius:999px;border:1px solid rgba(0,213,255,.2);background:rgba(0,213,255,.06);color:#8fe6d4;transition:transform .25s,box-shadow .25s,border-color .25s,color .25s}
+.terra-link:hover{transform:translateY(-2px);border-color:rgba(0,213,255,.34);box-shadow:0 0 16px rgba(0,213,255,.14);color:#bff8ee}
 #experience{padding:96px 80px;background:rgba(4,10,5,.32)}
 .timeline{position:relative;margin-top:52px}
 .t-line{position:absolute;left:50%;top:0;bottom:0;width:1px;transform:translateX(-50%);background:linear-gradient(to bottom,transparent,rgba(82,183,136,.58)12%,rgba(82,183,136,.58)88%,transparent);box-shadow:0 0 10px rgba(82,183,136,.22)}
@@ -847,14 +854,18 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
         <a href="https://projectlens.vercel.app/" target="_blank" rel="noopener" class="proj-link">View Project →</a>
       </div>
     </div>
-    <div class="gcard proj-soon">
+    <div class="gcard terra-card">
       <svg class="sprig" viewBox="0 0 32 44" fill="none" aria-hidden="true"><path d="M16 42C16 42 12 30 8 20C4 10 3 4 7 1" stroke="rgba(82,183,136,.32)" stroke-width="1" stroke-linecap="round"/><path d="M8 20C5 16 1 18 0 14C3 14 7 16 8 18Z" fill="rgba(82,183,136,.16)"/><path d="M10 30C7 27 3 29 1 25C4 25 8 27 10 28Z" fill="rgba(82,183,136,.13)"/><circle cx="7" cy="1" r="2.2" fill="rgba(255,143,171,.48)"/></svg>
-      <div class="proj-head ph3">🌼</div>
+      <div class="proj-head terra-head">🌍</div>
       <div class="proj-body">
-        <div class="proj-title">Experiments Coming Soon…</div>
-        <div class="proj-line">"Something is growing in the lab 🧪"</div>
-        <div class="stacks"><span class="stag stag-gold">In progress</span></div>
-        <span class="proj-link" style="color:rgba(255,209,102,.36);cursor:default">Stay tuned ✦</span>
+        <div class="proj-title">Terra</div>
+        <div class="proj-line">"Growing a smarter, more sustainable future with AI."</div>
+        <div class="stacks"><span class="stag">Next.js</span><span class="stag">TypeScript</span><span class="stag">Tailwind CSS</span><span class="stag">Firebase</span><span class="stag">Gemini AI</span></div>
+        <div class="terra-links">
+          <a href="https://terra-delta-woad.vercel.app/earth" target="_blank" rel="noopener" class="proj-link terra-link">View Project →</a>
+          <a href="https://github.com/kanthija" target="_blank" rel="noopener" class="proj-link terra-link">GitHub</a>
+          <a href="https://terra-delta-woad.vercel.app/earth" target="_blank" rel="noopener" class="proj-link terra-link">Live Demo</a>
+        </div>
       </div>
     </div>
   </div>
